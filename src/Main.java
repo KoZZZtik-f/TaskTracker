@@ -17,9 +17,6 @@ class Main {
 
         taskManager.addTask(new Task("Побегать на стадионе", "", Status.NEW));
         taskManager.addTask(new Task("Купить молоко", "Сделать это в пятерочке", Status.NEW));
-        taskManager.addTask(epicId, new Epic("Собрать комп", "", Status.NEW));
-        taskManager.addTask(new Subtask("Купить видюху", "Мегамаркет", Status.NEW, (Epic) taskManager.getTask(epicId)));
-        taskManager.addTask(new Subtask("Купить клаву", "DNS", Status.NEW, (Epic) taskManager.getTask(epicId)));
 
 
 //        for (Task task : taskManager.getAllTasks()) {
