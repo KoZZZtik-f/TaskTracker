@@ -167,26 +167,25 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     private void loadFromFile(File file) {
+        File dataFile = new File(Config.DATA_FILE_PATH);
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(Config.DATA_FILE_NAME))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(dataFile))) {
             String line = reader.readLine();
-            while (!line.isBlank() && !line.isEmpty()) {
-                line = reader.readLine();
-                if (line == null) {
-                    break;
-                }
-                if (!line.isBlank()) {
-                    var task = fromString(line);
-                    addTask(task);
-                }
+            Validator.checkFileFirstStroke(line);
 
+            while (!line.isBlank() && reader.ready()) {
+                line = reader.readLine();
+                if (line != null && !line.isBlank()) {
+                    var task = fromString(line);
+                    loadTask(task);
+                }
             }
 
             var historyLine = reader.readLine();
             if (historyLine != null && !historyLine.isBlank()) {
                 String[] historyIndexes = historyLine.split(",");
                 for (String historyIndex : historyIndexes) {
-                    historyManager.addToHistory(Integer.valueOf(historyIndex));
+                    historyManager.addToHistory(Integer.parseInt(historyIndex));
                 }
             }
 
@@ -194,6 +193,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InvalidFileException e) {
             throw new RuntimeException(e);
         }
     }
