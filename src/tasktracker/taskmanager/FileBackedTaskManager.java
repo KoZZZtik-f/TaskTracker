@@ -66,11 +66,25 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         stringBuilder.append("id,type,name,status,description,epic");
         if (!getAllTasks().isEmpty()) {
             for (Task task : getAllTasks()) {
-                stringBuilder.append(toString(task));
+                if (!(task instanceof Subtask)) {
+                    stringBuilder.append(toString(task));
+                }
+
+                if (task instanceof Epic) {
+                    Epic epic = (Epic) task;
+                    for (Subtask subtask : epic.getSubtasks()) {
+                        try {
+                            stringBuilder.append(toString(getTask(subtask.getId())));
+                        } catch (Throwable throwable) {
+                            //nothing
+                        }
+                    }
+                }
+
             }
         }
 
-        stringBuilder.append("\n");
+        stringBuilder.append("\n\n");
         stringBuilder.append(toString(history()));
 
         try (FileWriter fileWriter = new FileWriter(new File(Config.DATA_FILE_PATH))) {
