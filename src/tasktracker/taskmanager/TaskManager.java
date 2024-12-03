@@ -18,6 +18,7 @@ public interface TaskManager {
 
     void addTask(Task task);
 
+    void clearAll();
 
     void updateTask(int id, Task task); // 2.5
 

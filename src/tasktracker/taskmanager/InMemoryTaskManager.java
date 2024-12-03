@@ -50,6 +50,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
+    public void clearAll() {
+        tasks.clear();
+        historyManager.clearHistory();
+        currentId = 0;
+    }
+
+    @Override
     public void updateTask(int id, Task task) {
         tasks.put(id, task);
     }
