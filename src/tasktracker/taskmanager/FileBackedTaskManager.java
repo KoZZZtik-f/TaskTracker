@@ -95,7 +95,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     private String toString(Task task) {
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder("\n");
         stringBuilder.append(task.getId()).append(",");
         stringBuilder.append(task.getClass().getSimpleName()).append(",");
         stringBuilder.append(task.getName()).append(",");
@@ -105,7 +105,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
             var subtask = (Subtask) task;
             stringBuilder.append(subtask.getEpic().getId());
         }
-        stringBuilder.append("\n");
 
         return stringBuilder.toString();
     }
@@ -148,7 +147,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
                 Task task = new Task(name, description, status);
                 task.setId(id);
                 return task;
-
             }
 
             case EPIC -> {
@@ -158,9 +156,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
             }
 
             case SUBTASK -> {
-                Epic epic = (Epic) tasks.get(subtaskEpicId);
+                Epic epic = (Epic) tasks.get(subtaskEpicId.get());
                 var subtask = new Subtask(name, description, status, epic);
-
+                subtask.setId(id);
                 epic.addSubtask(subtask);
                 return subtask;
             }
