@@ -199,6 +199,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         }
     }
 
+    @Override
+    public String toString() {
+        return "FileBackedTaskManager{" +
+                "historyManager=" + historyManager +
+                ", tasks=" + Arrays.toString(tasks.values().toArray(new Task[0])) +
+                '}';
+    }
+
 //    private void addFromString(String s) {
 //        String[] parameters = s.split(",");
 //
