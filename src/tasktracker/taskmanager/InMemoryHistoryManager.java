@@ -31,4 +31,15 @@ public class InMemoryHistoryManager implements HistoryManager{
     public void clearHistory() {
         history.clear();
     }
+
+    @Override
+    public void removeFromHistory(int id) {
+        try {
+            history.remove(id);
+        } catch (Throwable throwable) {
+         //nothing
+        }
+    }
+
+
 }
