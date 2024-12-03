@@ -12,6 +12,7 @@ public class Epic extends Task {
         super(name, description, status);
 
         subtasks = new ArrayList<>();
+        updateEpicStatus();
     }
 
     public List<Subtask> getSubtasks() {
@@ -19,18 +20,25 @@ public class Epic extends Task {
     }
     
     private void updateEpicStatus() {
-        Status epicStatus = null; // null всегда будет заменяться
+        Status epicStatus = Status.NEW; // NEW всегда будет заменяться
         boolean allSubtasksDone = true;
 
         if (subtasks.isEmpty()) {
+            allSubtasksDone = false;
             epicStatus = Status.NEW;
         } else {
             for (Subtask subtask : subtasks) {
+                if (allSubtasksDone && subtask.getStatus() != Status.DONE) {
+                    allSubtasksDone = false;
+                }
                 if (subtask.getStatus() == Status.IN_PROGRESS) {
                     epicStatus = Status.IN_PROGRESS;
-                    break;
-                } else if (allSubtasksDone && subtask.getStatus() != Status.DONE) {
                     allSubtasksDone = false;
+                    break;
+                }
+                if (!allSubtasksDone && subtask.getStatus() == Status.DONE) {
+                    epicStatus = Status.IN_PROGRESS;
+                    break;
                 }
             }
         }
@@ -43,5 +51,16 @@ public class Epic extends Task {
 
     public void addSubtask(Subtask subtask) {
         subtasks.add(subtask);
+        updateEpicStatus();
+    }
+
+    public void deleteSubtask(int id) {
+        for (int i = 0; i < subtasks.size(); i++) {
+            var subtask = subtasks.get(i);
+            if (subtask.getId() == id) {
+                subtasks.remove(i);
+            }
+        }
+        updateEpicStatus();
     }
 }
