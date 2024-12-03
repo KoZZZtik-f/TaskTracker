@@ -45,7 +45,11 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void addTask(Task task) {
-        task.setId(incCurrentId());
+        try {
+            tasks.put(task.getId(), task);
+        } catch (Throwable throwable) {
+            task.setId(incCurrentId());
+        }
         tasks.put(task.getId(), task);
     }
 
@@ -58,6 +62,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(int id, Task task) {
+        task.setId(id);
         tasks.put(id, task);
     }
 
