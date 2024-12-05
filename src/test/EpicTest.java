@@ -55,7 +55,7 @@ class EpicTest {
             epic.addSubtask(new Subtask("Sub" + i, "", Status.DONE, epic));
         }
 
-        assertEquals(Status.IN_PROGRESS, epic.getStatus());
+        assertEquals(Status.IN_PROGRESS, epic.getStatus(), "Статус должен быть IN_PROGRESS");
     }
 
     // e

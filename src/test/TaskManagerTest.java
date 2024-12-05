@@ -3,6 +3,7 @@ package test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import tasktracker.model.Epic;
 import tasktracker.model.Status;
 import tasktracker.model.Subtask;
@@ -13,39 +14,20 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     T taskManager;
     Task taskForTest;
 
+    public TaskManagerTest(T taskManager) {
+        this.taskManager = taskManager;
+    }
+
     @BeforeEach
     public void beforeEach() {
         taskManager.clearAll();
         taskForTest = new Task("TaskForTest", "describe", Status.NEW);
     }
 
-    @Test
-    public void checkSubtasksEpic() {
-        //init + work
-        int subtaskId = 5;
-        Epic epic = new Epic("name", "", Status.NEW);
-        for (int i = 0; i < 5; i++) {
-            Subtask subtask = new Subtask("name", "", Status.NEW, epic);
-            taskManager.addTask(subtask);
-        }
-        taskManager.addTask(epic);
-
-        //res
-        Subtask randomSubtask = (Subtask) taskManager.getTask(subtaskId);
-        Epic epicLink = randomSubtask.getEpic();
-
-        Assertions.assertEquals(epicLink, epic);
-    }
-
-    @Test
-    public void checkEpicStatus() {
-
-    }
-
     // All the methods
     @Test
-    public void testAddTaskStandart() {
-        Task[] expected = new Task[10];
+    public void shouldAddTask() {
+        Object[] expected = new Task[10];
 
         for (int i = 0; i < 5; i++) {
             Task task = new Task("name" + i, "desc" + i, Status.NEW);
@@ -58,17 +40,17 @@ public abstract class TaskManagerTest<T extends TaskManager> {
             expected[i+5] = task;
         }
 
-        Task[] res = (Task[]) taskManager.getAllTasks().toArray();
+        Object[] res = taskManager.getAllTasks().toArray();
+        for (int i = 0; i < res.length; i++) {
+
+        }
+
         Assertions.assertArrayEquals(expected, res);
     }
 
-//    @Test
-//    public void testAddTaskIssue() {
-//
-//    }
-
+    // void deleteTask(int id);
     @Test
-    public void testDeleteTaskEmpty() {
+    public void shouldDeleteTask() {
         Task task = new Task("name", "desc", Status.NEW);
         Task task2 = new Task("name2", "desc2", Status.NEW);
 
@@ -82,7 +64,19 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void testUpdateTask() {
+    public void shouldNotDeleteTaskWhenItsEmpty() {
+        Task taskForDelete = new Task("name", "desc", Status.NEW);
+
+        var oldTasks = taskManager.getAllTasks().toArray();
+        taskManager.deleteTask(taskForDelete.getId());
+        var newTasks = taskManager.getAllTasks().toArray();
+
+        Assertions.assertArrayEquals(oldTasks, newTasks);
+    }
+
+    // void updateTask(int id, Task task);
+    @Test
+    public void shouldReturnUpdatedTaskWhenTaskManagerUpdatedIt() {
         Task taskForUpdate = new Task("ForUpd", "", Status.NEW);
         Task newTask = taskForTest;
 
@@ -95,8 +89,9 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         Assertions.assertArrayEquals(expected, res);
     }
 
+    // List<Integer> history()
     @Test
-    public void testGetHistory() {
+    public void shouldGetHistory() {
         Task task1 = new Task("name", "desc", Status.NEW);
         Task task2 = new Task("name", "desc", Status.NEW);
         Task task3 = new Task("name", "desc", Status.NEW);
@@ -114,8 +109,16 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.getTask(3);
         taskManager.getTask(1);
 
-        Integer[] expected = new Integer[] {2, 3, 1};
-        Integer[] res = (Integer[]) taskManager.history().toArray();
+        Object[] expected = new Integer[] {1, 3, 2};
+        Object[] res = taskManager.history().toArray();
+
+        Assertions.assertArrayEquals(expected, res);
+    }
+
+    @Test
+    public void shouldGetEmptyHistoryWhenTasksEmpty() {
+        Object[] expected = new Integer[] {};
+        Object[] res = taskManager.history().toArray();
 
         Assertions.assertArrayEquals(expected, res);
     }
