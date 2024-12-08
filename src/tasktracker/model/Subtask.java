@@ -8,7 +8,7 @@ public class Subtask extends Task{
         super(name, description, status);
 
         this.epic = epic;
-        epic.addSubtask(this);
+//        epic.addSubtask(this);
     }
 
     public Epic getEpic() {
