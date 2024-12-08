@@ -1,4 +1,4 @@
-package tasktracker.taskmanager;
+package tasktracker.controller;
 
 import tasktracker.model.Epic;
 import tasktracker.model.Task;

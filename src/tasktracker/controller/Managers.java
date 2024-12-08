@@ -1,4 +1,6 @@
-package tasktracker.taskmanager;
+package tasktracker.controller;
+
+import tasktracker.config.Config;
 
 public class Managers {
 
