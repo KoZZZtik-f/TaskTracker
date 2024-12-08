@@ -1,11 +1,15 @@
 package tasktracker.model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Epic extends Task {
 
-    List<Subtask> subtasks;
+    private List<Subtask> subtasks;
+    private LocalDateTime endTime;
 
 
     public Epic(String name, String description, Status status) {
@@ -18,7 +22,12 @@ public class Epic extends Task {
     public List<Subtask> getSubtasks() {
         return subtasks;
     }
-    
+
+    @Override
+    public Optional<LocalDateTime> getEndTime() {
+        return Optional.of(this.endTime);
+    }
+
     private void updateEpicStatus() {
         Status epicStatus = Status.NEW; // NEW всегда будет заменяться
         boolean allSubtasksDone = true;
@@ -49,9 +58,21 @@ public class Epic extends Task {
         setStatus(epicStatus);
     }
 
+    private void updateEpicEndTime() {
+        Duration summaryDuration = Duration.ZERO;
+
+        if (getStartTime().isPresent() && !getSubtasks().isEmpty()) {
+            for (Subtask subtask : getSubtasks()) {
+                summaryDuration = summaryDuration.plus(subtask.getDuration());
+            }
+            setEndTime(getStartTime().get().plus(summaryDuration));
+        }
+    }
+
     public void addSubtask(Subtask subtask) {
         subtasks.add(subtask);
         updateEpicStatus();
+        updateEpicEndTime();
     }
 
     public void deleteSubtask(int id) {
@@ -61,6 +82,15 @@ public class Epic extends Task {
                 subtasks.remove(i);
             }
         }
+        updateEpicAtAll();
+    }
+
+    private void updateEpicAtAll() {
         updateEpicStatus();
+        updateEpicEndTime();
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 }
