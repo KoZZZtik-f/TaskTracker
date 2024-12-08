@@ -25,11 +25,6 @@ public class Task {
         this.startTime = Optional.empty();
         this.duration = Duration.ZERO;
 
-        if (description == null || description.isBlank()) {
-            this.description = Optional.empty();
-        } else {
-            this.description = Optional.of(description);
-        }
     }
 
     public String getName() {

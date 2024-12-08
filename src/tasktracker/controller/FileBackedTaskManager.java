@@ -1,4 +1,4 @@
-package tasktracker.taskmanager;
+package tasktracker.controller;
 
 import tasktracker.config.Config;
 import tasktracker.exceptions.InvalidFileException;
@@ -29,7 +29,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         save();
     }
 
-    public void loadTask(Task task) {
+    public void uploadTask(Task task) {
         tasks.put(task.getId(), task);
     }
 
@@ -38,9 +38,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         var task = tasks.get(index);
 
         historyManager.addToHistory(task.getId());
-//        save();
+        save();
         return task;
     }
+
 
     @Override
     public void deleteAllTasks() {
@@ -60,7 +61,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         save();
     }
 
-    private void save() {
+    protected void save() {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("id,type,name,status,description,epic");
@@ -177,7 +178,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
                 line = reader.readLine();
                 if (line != null && !line.isBlank()) {
                     var task = fromString(line);
-                    loadTask(task);
+                    uploadTask(task);
                 }
             }
 

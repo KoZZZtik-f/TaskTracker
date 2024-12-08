@@ -1,6 +1,6 @@
 package test;
 
-import tasktracker.taskmanager.FileBackedTaskManager;
+import tasktracker.controller.FileBackedTaskManager;
 
 public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager>{
 

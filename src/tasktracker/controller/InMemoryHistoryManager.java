@@ -1,7 +1,6 @@
-package tasktracker.taskmanager;
+package tasktracker.controller;
 
 import tasktracker.config.Config;
-import tasktracker.model.Task;
 
 import java.util.LinkedList;
 import java.util.List;
