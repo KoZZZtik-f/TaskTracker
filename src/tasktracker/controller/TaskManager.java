@@ -14,6 +14,8 @@ public interface TaskManager {
 
     Task getTask(int id); // 2.3
 
+    List<Task> getPrioritizedTask();
+
     void addTask(int id, Task task);
 
     void addTask(Task task);
