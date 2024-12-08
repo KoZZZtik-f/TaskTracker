@@ -25,30 +25,56 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     // All the methods
+
+    // void addTask(int id, Task task);
+    @Test
+    public void shouldAddTaskById() {
+        Task task1 = new Task("Test1", "desc1", Status.NEW);
+
+        taskManager.addTask(10, task1);
+
+        // Check 1
+        ArrayList<Task> expected1 = new ArrayList<>(List.of(task1));
+        ArrayList<Task> res1 = (ArrayList<Task>) taskManager.getAllTasks();
+        Assertions.assertEquals(expected1.getFirst(), res1.getFirst());
+
+        // Check 2
+        int expectedId1 = taskManager.getTask(task1.getId()).getId();
+        Assertions.assertEquals(expectedId1, task1.getId());
+    }
+
+    //  void addTask(Task task);
     @Test
     public void shouldAddTask() {
-        Object[] expected = new Task[10];
+        Task task1 = new Task("Test1", "desc1", Status.NEW);
 
-        for (int i = 0; i < 5; i++) {
-            Task task = new Task("name" + i, "desc" + i, Status.NEW);
-            taskManager.addTask(task);
-            expected[i] = task;
-        }
-        for (int i = 0; i < 5; i++) {
-            Task task = new Task("name" + i, "desc" + i, Status.NEW);
-            taskManager.addTask(i + 10,task);
-            expected[i+5] = task;
-        }
+        taskManager.addTask(task1);
 
-        Object[] res = taskManager.getAllTasks().toArray();
-        for (int i = 0; i < res.length; i++) {
+        // Check 1
+        ArrayList<Task> expected1 = new ArrayList<>(List.of(task1));
+        ArrayList<Task> res1 = (ArrayList<Task>) taskManager.getAllTasks();
+        Assertions.assertEquals(expected1.getFirst(), res1.getFirst());
 
-        }
+        // Check 2
+        int expectedId1 = 1;
+        Assertions.assertEquals(expectedId1, task1.getId());
+    }
 
-        Assertions.assertArrayEquals(expected, res);
+    // Task getTask(int id);
+    @Test
+    public void shouldGetAddedTask() {
+        Task task1 = new Task("Test1", "desc1", Status.NEW);
+
+        taskManager.addTask(task1);
+
+        Task expected = task1;
+        Task res = taskManager.getTask(task1.getId());
+        Assertions.assertEquals(expected, res);
     }
 
     // void deleteTask(int id);
+
+
     @Test
     public void shouldDeleteTask() {
         Task task = new Task("name", "desc", Status.NEW);
