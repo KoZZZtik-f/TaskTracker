@@ -10,6 +10,9 @@ public class Config {
     public static final String DATA_FILE_PATH = "D:\\Games\\Project programma\\untitled5\\" +
         "TaskTracker22455suoer\\src\\tasktracker\\resources\\data";
 
+    //Http
+    public static final String URI_STRING = "http://localhost:8078";
+
     //Exceptions
     public static final String invalidFileMessage = "Файл не удовлетворяет стандарту программы";
 }
