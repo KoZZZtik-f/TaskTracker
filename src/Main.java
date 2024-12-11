@@ -6,24 +6,55 @@ import tasktracker.model.Subtask;
 import tasktracker.controller.Managers;
 import tasktracker.controller.TaskManager;
 import tasktracker.model.Task;
+import tasktracker.taskmanager.InMemoryTaskManager;
+import tasktracker.taskmanager.Managers;
+import tasktracker.taskmanager.TaskManager;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URI;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 class Main {
-    public static void main(String[] args) throws IOException {
-        new KVServer().start();
+    public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefault();
-        taskManager.getTask(1);
-        taskManager.addTask(new Task("task1", "desc1", Status.NEW));
 
-//        taskManager.addTask(new Task("T", "d", Status.NEW));
-//        KVTaskClient taskClient = new KVTaskClient("http://localhost:8078");
-//        taskClient.put("1", "One");
-//        String loadedStr = taskClient.load("1");
-//        System.out.println(loadedStr);
+        Epic epic = new Epic("Epic2", "", Status.NEW);
+        Subtask subtask1 = new Subtask("sub21", "", Status.NEW, epic);
+        Subtask subtask2 = new Subtask("sub22", "", Status.NEW, epic);
+
+        System.out.println(taskManager.toString());
+
+//        taskManager.addTask(subtask1);
+//        taskManager.addTask(subtask2);
+//        taskManager.addTask(epic);
+
+
+//        taskManager.addTask(subtask1);
+//        taskManager.addTask(subtask2);
+//        taskManager.addTask(epic);
+
+
+
+
+//        System.out.println(Arrays.toString(taskManager.history().toArray()));
+
+//
+
+//
 
     }
+
+//    static void iterPrint(List<Integer> list, TaskManager taskManager) {
+//        for (Integer i : new ArrayList<>(list)) {
+//            System.out.println(taskManager.getTask(i).toString());
+//        }
+//    }
+//    static void iterPrint(List<Task> list) {
+//        for (Task task : new ArrayList<>(list)) {
+//            System.out.println(task.toString());
+//        }
+//    }
 }
