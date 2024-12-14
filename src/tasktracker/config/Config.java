@@ -15,4 +15,6 @@ public class Config {
 
     //Exceptions
     public static final String invalidFileMessage = "Файл не удовлетворяет стандарту программы";
+
+    //delete me 1
 }
